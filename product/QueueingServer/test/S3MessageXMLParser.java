@@ -1,4 +1,4 @@
-package util;
+package test;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,15 +20,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class XMLParser {
+public class S3MessageXMLParser {
 
 	private String fileName;
 	private Document msgFormatDoc;
 
-	XMLParser() {
+	S3MessageXMLParser() throws ParserConfigurationException, SAXException, IOException {
 		fileName = "MessageFormat.xml";
+		readFile();
 	}
 
+	
+	/***
+	 * Read the input file and Parsing it into a XML file using DOM
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	private void readFile() throws ParserConfigurationException, SAXException,
 			IOException {
 		File msgFormat = new File(fileName);
@@ -39,9 +47,35 @@ public class XMLParser {
 		msgFormatDoc.getDocumentElement().normalize();
 	}
 
-	private void addTagDesc(String tagName, String textContent) {
+	
+	/***
+	 * Adding text content to the tags corresponding to the name passed
+	 * @param tagName
+	 * @param textContent
+	 */
+	public void addTagDesc(String tagName, String textContent) {
 		NodeList nodes = msgFormatDoc.getElementsByTagName(tagName);
 		nodes.item(0).setTextContent(textContent);
+	}
+	
+	public void setTestName(String testName) {
+		addTagDesc("TestName", testName);
+	}
+	
+	public void setS3URL(String s3URL) {
+		addTagDesc("S3URL", s3URL);
+	}
+	
+	public void setTestTool(String testToolName) {
+		addTagDesc("TestTool", testToolName);
+	}
+	
+	public void setPublisher(String publisherName) {
+		addTagDesc("Publisher", publisherName);
+	}
+	
+	public void setSubscriber(String subscriberName) {
+		addTagDesc("Subscriber", subscriberName);
 	}
 
 	private String convertXmlToString() throws TransformerException {
@@ -53,16 +87,19 @@ public class XMLParser {
 				writer));
 
 		String xmlConvertedToString = writer.getBuffer().toString();
-		System.out.println(xmlConvertedToString);
 		return xmlConvertedToString;
 	}
 
 	public static void main(String[] args) throws ParserConfigurationException,
 			SAXException, IOException, TransformerException {
-		XMLParser p = new XMLParser();
-		p.readFile();
-		p.addTagDesc("BucketName", "cs237");
-		p.convertXmlToString();
+		S3MessageXMLParser p = new S3MessageXMLParser();
+		p.setTestName("cs237");
+		String str = p.convertXmlToString();
+		
+		System.out.println(str);
+		
+		S3MessageStringToXML abc = new S3MessageStringToXML(str);
+		System.out.println(abc.getTestName());
 	}
 
 }

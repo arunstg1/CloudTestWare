@@ -71,15 +71,16 @@ public class SimpleQueueServiceSample {
                 }
             }
             System.out.println();
-/*
+
             // Delete a message
             System.out.println("Deleting a message.\n");
             String messageRecieptHandle = messages.get(0).getReceiptHandle();
+            System.out.println(messageRecieptHandle);
             sqs.deleteMessage(new DeleteMessageRequest(myQueueUrl, messageRecieptHandle));
 
             // Delete a queue
             System.out.println("Deleting the test queue.\n");
-            sqs.deleteQueue(new DeleteQueueRequest(myQueueUrl));*/
+            sqs.deleteQueue(new DeleteQueueRequest(myQueueUrl));
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which means your request made it " +
                     "to Amazon SQS, but was rejected with an error response for some reason.");
