@@ -25,7 +25,7 @@ public class Main {
 			System.out.println("run type is either \"TestInvoker\" or \"TestRunner\"");
 			return;
 		}
-		if(args[0] == "TestInvoker")
+		if(args[0].equals("TestInvoker"))
 			try {
 				new TestInvoker().process(args);
 			} catch (IOException e) {

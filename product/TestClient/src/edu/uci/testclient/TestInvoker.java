@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -15,8 +16,20 @@ import edu.uci.util.MsgFormat;
 
 public class TestInvoker {
 
+	private ZipFileCreator zipfileCreator;
+	private S3Uploader s3Uploader;
+
+	public TestInvoker(){
+		zipfileCreator = new ZipFileCreator();
+		s3Uploader = new S3Uploader();
+	}
+	
 	public void process(String[] args) throws IOException {
-		 JarFile jarFile = new JarFile(args[1]);
+			UUID testId = UUID.randomUUID();
+			zipfileCreator.zip(args, testId);
+			s3Uploader.upload(testId);
+			
+		 	JarFile jarFile = new JarFile(args[1]);
 		    Enumeration<JarEntry> e = jarFile.entries();
 
 		    URL[] urls = new URL[args.length];
