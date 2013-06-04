@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="cobertura.examples.basic" default="compile" basedir=".">
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="common.dir" value="${basedir}/product/Common" />
+	
+	<path id="lib.classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="build-common" depends="init">
+		<mkdir dir="${build.dir}/common"/>
+		<javac srcdir="${common.dir}" destdir="${build.dir}/common" debug="yes">
+			<classpath refid="lib.classpath" />
+		</javac>
+		<jar destfile="${build.dir}/common.jar">
+			<fileset dir="${build.dir}/common"
+					 excludes="**/Test.class" />
+		</jar>
+	</target>
+	
+</project>
