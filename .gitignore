@@ -2,3 +2,4 @@ bin/
 !tools/apache-ant-1.9.1/dist/bin/
 Build/
 build/
+.metadata/

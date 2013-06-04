@@ -3,13 +3,17 @@
  */
 package server;
 
+import java.util.List;
+
+import com.amazonaws.services.sqs.model.Message;
+
 public interface ISimpleQueuingService {
 	
-	public void createQueue(String queueName);
+	public void createQueue();
 	
 	public void sendMessageToSQS(String message);
 	
-	public void receiveMessageFromSQS();
+	public List<Message> receiveMessageFromSQS();
 	
 	public String getMessageAtPosition(int position);
 	

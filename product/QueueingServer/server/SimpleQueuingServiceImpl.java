@@ -18,18 +18,21 @@ public class SimpleQueuingServiceImpl implements ISimpleQueuingService {
 	AmazonSQS sqs;
 	Region usWest2;
 	String myQueueURL;
+	String queueName;
 	List<Message> messages;
 	
-	public SimpleQueuingServiceImpl() {
+	public SimpleQueuingServiceImpl(String queueName) {
 		sqs = new AmazonSQSClient(new ClasspathPropertiesFileCredentialsProvider());
 		usWest2 = Region.getRegion(Regions.US_WEST_2);
 		sqs.setRegion(usWest2);
+		this.queueName = queueName;
 	}
 
 	@Override
-	public void createQueue(String queueName) {
-		CreateQueueRequest createQueueRequest = new CreateQueueRequest("MyQueue");
+	public void createQueue() {
+		CreateQueueRequest createQueueRequest = new CreateQueueRequest(queueName);
         myQueueURL = sqs.createQueue(createQueueRequest).getQueueUrl();
+        System.out.println(myQueueURL);
 	}
 
 	@Override
@@ -38,9 +41,9 @@ public class SimpleQueuingServiceImpl implements ISimpleQueuingService {
 	}
 
 	@Override
-	public void receiveMessageFromSQS() {
+	public List<Message> receiveMessageFromSQS() {
 		ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueURL);
-		messages = sqs.receiveMessage(receiveMessageRequest).getMessages();
+		return sqs.receiveMessage(receiveMessageRequest).getMessages();
 	}
 	
 	public String getMessageAtPosition(int position) {

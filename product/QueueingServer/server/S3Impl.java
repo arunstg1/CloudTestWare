@@ -17,23 +17,22 @@ public class S3Impl implements IS3 {
 	String bucketName;
 	String objectName;
 	
-	public S3Impl() {
+	public S3Impl(String bucketName, String objectName) {
 		s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
 		usWest2 = Region.getRegion(Regions.US_WEST_2);
 		s3.setRegion(usWest2);
+		this.bucketName = bucketName;
+		this.objectName = objectName;
 	}
 
-	@Override
-	public void createBucket(String bucketName) {
-		this.bucketName = bucketName;
+	public void createBucket() {
 		CannedAccessControlList acl = CannedAccessControlList.PublicRead;
         s3.createBucket(bucketName);
         s3.setBucketAcl(bucketName, acl);
 	}
 
 	@Override
-	public void pushObject(String objectName) {
-		this.objectName = objectName;
+	public void pushObject() {
 		PutObjectRequest por = new PutObjectRequest(bucketName,  objectName, new File(objectName)).withCannedAcl(CannedAccessControlList.PublicRead);
         s3.putObject(por);
 	}
