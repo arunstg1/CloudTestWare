@@ -1,4 +1,4 @@
-package server;
+package edu.uci.util.S3;
 
 public interface IS3 {
 

@@ -1,4 +1,4 @@
-package server;
+package edu.uci.util.DB;
 
 public class DBKeyValue {
 	

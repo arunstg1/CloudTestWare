@@ -1,4 +1,4 @@
-package server;
+package edu.uci.util.DB;
 
 import java.util.ArrayList;
 import java.util.List;
