@@ -18,7 +18,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Main {
 	
-	public static void main(String args[]) throws IOException{
+	public static void main(String args[]){
 		
 		if(args.length < 3){
 			System.out.println("Usage: TestClient.jar <run type> <test library jar> <optional source and dependent jars>");
@@ -26,7 +26,11 @@ public class Main {
 			return;
 		}
 		if(args[0] == "Testinvoker")
-			processTestInvoker(args);
+			try {
+				processTestInvoker(args);
+			} catch (IOException e) {
+				System.out.println("Error: " + e.getMessage());
+			}
 		else
 			processTestRunner(args);
 	   }
