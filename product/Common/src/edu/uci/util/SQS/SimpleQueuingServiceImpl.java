@@ -57,7 +57,8 @@ public class SimpleQueuingServiceImpl implements ISimpleQueuingService {
 
 	@Override
 	public List<Message> receiveMessageFromSQS() {
-		ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(myQueueURL);
+		GetQueueUrlResult queueUrl = sqs.getQueueUrl(new GetQueueUrlRequest(queueName));
+		ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(queueUrl.getQueueUrl());
 		return sqs.receiveMessage(receiveMessageRequest).getMessages();
 	}
 	

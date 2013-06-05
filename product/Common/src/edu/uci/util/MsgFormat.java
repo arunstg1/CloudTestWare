@@ -24,12 +24,35 @@ public class MsgFormat {
 	@XmlElement(name="subscriber")
 	String subscriber;
 
+	@XmlElement(name="passed")
+	Boolean passed;
+	
+	@XmlElement(name="result")
+	String result;
+
+	
 	public String getTestName() {
 		return testName;
 	}
 
 	public void setTestName(String testName) {
 		this.testName = testName;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public boolean getStatus() {
+		return passed;
+	}
+
+	public void setStatus(boolean passed) {
+		this.passed = passed;
 	}
 
 	public String getS3URL() {
