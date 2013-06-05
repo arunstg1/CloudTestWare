@@ -4,8 +4,8 @@ public interface IS3 {
 
 	public void createBucket();
 	
-	public void pushObject();
+	public void pushObject(String objectName);
 	
-	public void deleteObject();
+	public void deleteObject(String objectName);
 	
 }

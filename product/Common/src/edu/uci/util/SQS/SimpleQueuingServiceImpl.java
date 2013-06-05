@@ -2,6 +2,7 @@ package edu.uci.util.SQS;
 
 import java.util.List;
 
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -9,6 +10,8 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.DeleteMessageRequest;
+import com.amazonaws.services.sqs.model.GetQueueUrlRequest;
+import com.amazonaws.services.sqs.model.GetQueueUrlResult;
 import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
@@ -22,7 +25,18 @@ public class SimpleQueuingServiceImpl implements ISimpleQueuingService {
 	List<Message> messages;
 	
 	public SimpleQueuingServiceImpl(String queueName) {
-		sqs = new AmazonSQSClient(new ClasspathPropertiesFileCredentialsProvider());
+		sqs = new AmazonSQSClient(new AWSCredentials() {
+			
+			@Override
+			public String getAWSSecretKey() {
+				return "oSSzTsoesWeF6I7NX2yMaBbP1D0Z6gNJAY86C8pi";
+			}
+			
+			@Override
+			public String getAWSAccessKeyId() {
+				return "AKIAJLTYIAVJS3IP2QIA";
+			}
+		});
 		usWest2 = Region.getRegion(Regions.US_WEST_2);
 		sqs.setRegion(usWest2);
 		this.queueName = queueName;
@@ -37,7 +51,8 @@ public class SimpleQueuingServiceImpl implements ISimpleQueuingService {
 
 	@Override
 	public void sendMessageToSQS(String message) {
-		sqs.sendMessage(new SendMessageRequest(myQueueURL, message));
+		GetQueueUrlResult queueUrl = sqs.getQueueUrl(new GetQueueUrlRequest(queueName));
+		sqs.sendMessage(new SendMessageRequest(queueUrl.getQueueUrl(), message));
 	}
 
 	@Override
